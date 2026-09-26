@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827">
+<title>لَمّة | ألعاب جماعية</title>
+<link rel="icon" href="logo.svg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><img src="logo.svg" alt="لَمّة"><div><b>لَمّة</b><span>العبوا مع بعض</span></div></div>
+  <button class="ghost" id="langBtn">EN</button>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-copy">
+      <span class="pill">🎮 بدون نرد • بدون حظ • بدون إعلانات مزعجة</span>
+      <h1>جمّع أصحابك.<br><strong>وابدأوا اللعب.</strong></h1>
+      <p>ألعاب جماعية قصيرة تعتمد على السرعة، الذكاء والتخمين. لا تحتاج تسجيلًا في هذه النسخة التجريبية.</p>
+      <div class="actions"><button class="primary" id="quickBtn">ابدأ لعبة سريعة</button><button class="secondary" id="roomBtn">إنشاء غرفة</button></div>
+    </div>
+    <div class="hero-card"><div class="orb">لَمّة</div><p>اختَر لعبة<br>واجمع اللاعبين</p></div>
+  </section>
+  <section>
+    <div class="section-head"><h2>الألعاب</h2><span>النسخة التجريبية</span></div>
+    <div class="games" id="games"></div>
+  </section>
+  <section class="rules">
+    <h2>قواعد لَمّة</h2>
+    <div><b>✓</b><span>لا قمار ولا مراهنات</span></div>
+    <div><b>✓</b><span>لا نرد ولا ألعاب مبنية على الحظ</span></div>
+    <div><b>✓</b><span>لا محتوى غير مناسب</span></div>
+    <div><b>✓</b><span>المنافسة تعتمد على المهارة والتفكير</span></div>
+  </section>
+</main>
+<div class="modal hidden" id="modal"><div class="modal-box"><button class="close" id="close">×</button><div id="modalContent"></div></div></div>
+<script src="app.js"></script>
+</body>
+</html>
