@@ -3,8 +3,7 @@ const games=[
 {id:"memory",emoji:"🧠",name:"ذاكرة",desc:"احفظ الترتيب ثم اكتشف البطاقة المطلوبة.",type:"memory"},
 {id:"guess",emoji:"🕵️",name:"المخفي",desc:"لاعب واحد لا يعرف الكلمة. اكتشفوه من الأسئلة.",type:"guess"},
 {id:"draw",emoji:"🎨",name:"ارسم وخمّن",desc:"ارسم الكلمة ودع أصحابك يحاولون معرفتها.",type:"draw"},
-{id:"math",emoji:"➕",name:"تحدي الحساب",desc:"حل المسألة بسرعة. الأسرع يحصل على النقطة.",type:"math"},
-{id:"xo",emoji:"❌⭕",name:"إكس أو",desc:"لعبة مهارة لشخصين بدون أي حظ.",type:"xo"}
+{id:"math",emoji:"➕",name:"تحدي الحساب",desc:"حل المسألة بسرعة. الأسرع يحصل على النقطة.",type:"match"},{id:"xo",emoji:"❌⭕",name:"إكس أو",desc:"لعبة مهارة لشخصين بدون أي حظ.",type:"xo"}
 ];
 const questions=["ما عاصمة فلسطين؟","كم عدد أيام الأسبوع؟","ما الكوكب المعروف بالكوكب الأحمر؟","كم يساوي 7 × 8؟"];
 const answers=[["القدس","القاهرة","دمشق","عمّان"],["5","7","9","10"],["المريخ","الزهرة","المشتري","عطارد"],["54","56","64","48"]];
@@ -26,6 +25,6 @@ function answer(ch,correct){show(`<h2>${ch===correct?"🎉 صحيح!":"❌ لي�
 function checkMath(n){let v=Number($("#ans").value);show(`<h2>${v===n?"🎉 إجابة صحيحة!":"❌ حاول مرة أخرى"}</h2><p>الإجابة الصحيحة: ${n}</p><button class="full" onclick="openGame('math')">مسألة جديدة</button>`)}
 function memoryAsk(nums){let shuffled=[...nums].sort(()=>Math.random()-.5);show(`<h2>🧠 تذكّر</h2><p>ما الرقم الذي كان في المركز الثالث؟</p><div class="choice-grid">${shuffled.map(n=>`<button class="choice" onclick="answerMemory(${n},${nums[2]})">${n}</button>`).join("")}</div>`)}
 function answerMemory(a,c){show(`<h2>${a===c?"🎉 ممتاز!":"❌ خطأ"}</h2><p>كان الرقم الثالث: ${c}</p><button class="full" onclick="openGame('memory')">جولة جديدة</button>`)}
-function newHiddenWord(){const words=["موزة","سيارة","مدرسة","كرة قدم","بيتزا"];const w=words[Math.floor(Math.random()*words.length)];show(`<h2>🕵️ كلمة الجولة</h2><p>مرر الهاتف لكل لاعب ليعرف دوره. توزيع الأدوار الكامل سيضاف مع نظام الغرف.</p><div class="question">الكلمة: ${w}</div>`)}
+function newHiddenWord(){const words=["موزة","سيارة","مدرسة","كرة قدم","بيتزا"];const w=words[Math.floor(Math.random()*words.length)];show(`<h2>🕵️ كلمة الجولة</h2><p>مرر الهاتف لكل لاعب ليعرف دوره. توزيع الأدوار للكامل سيضاف مع نظام الغرف.</p><div class="question">الكلمة: ${w}</div>`)}
 function startXO(){let board=Array(9).fill("");let turn="X";const render=()=>{$("#board").innerHTML=board.map((v,i)=>`<button class="choice" style="font-size:30px;height:70px" onclick="xoMove(${i})">${v||"·"}</button>`).join("")};window.xoMove=i=>{if(board[i])return;board[i]=turn;turn=turn==="X"?"O":"X";render()};render()}
 $("#langBtn").onclick=()=>alert("English mode is planned for the next version.");
