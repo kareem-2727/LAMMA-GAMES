@@ -1,41 +1,7 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#111827">
-<title>لَمّة | ألعاب جماعية</title>
-<link rel="icon" href="logo.svg">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<header class="topbar">
-  <div class="brand"><img src="logo.svg" alt="لَمّة"><div><b>لَمّة</b><span>العبوا مع بعض</span></div></div>
-  <button class="ghost" id="langBtn">EN</button>
-</header>
-<main>
-  <section class="hero">
-    <div class="hero-copy">
-      <span class="pill">🎮 بدون نرد • بدون حظ • بدون إعلانات مزعجة</span>
-      <h1>جمّع أصحابك.<br><strong>وابدأوا اللعب.</strong></h1>
-      <p>ألعاب جماعية قصيرة تعتمد على السرعة، الذكاء والتخمين. لا تحتاج تسجيلًا في هذه النسخة التجريبية.</p>
-      <div class="actions"><button class="primary" id="quickBtn">ابدأ لعبة سريعة</button><button class="secondary" id="roomBtn">إنشاء غرفة</button></div>
-    </div>
-    <div class="hero-card"><div class="orb">لَمّة</div><p>اختَر لعبة<br>واجمع اللاعبين</p></div>
-  </section>
-  <section>
-    <div class="section-head"><h2>الألعاب</h2><span>النسخة التجريبية</span></div>
-    <div class="games" id="games"></div>
-  </section>
-  <section class="rules">
-    <h2>قواعد لَمّة</h2>
-    <div><b>✓</b><span>لا قمار ولا مراهنات</span></div>
-    <div><b>✓</b><span>لا نرد ولا ألعاب مبنية على الحظ</span></div>
-    <div><b>✓</b><span>لا محتوى غير مناسب</span></div>
-    <div><b>✓</b><span>المنافسة تعتمد على المهارة والتفكير</span></div>
-  </section>
-</main>
-<div class="modal hidden" id="modal"><div class="modal-box"><button class="close" id="close">×</button><div id="modalContent"></div></div></div>
-<script src="app.js"></script>
-</body>
-</html>
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090d1a"><meta name="description" content="لَمّة — ألعاب جماعية مجانية تعتمد على المهارة والتفكير."><link rel="icon" href="logo.svg"><title>لَمّة | ألعاب جماعية</title><link rel="stylesheet" href="style.css"></head><body>
+<header><a class="brand" href="#"><img src="logo.svg"><span><b>لَمّة</b><small>العبوا مع بعض</small></span></a><div class="head-actions"><span class="free">مجاني 100%</span><button id="sound" class="icon">🔊</button></div></header>
+<main><section class="hero"><div><span class="badge">🎮 12 لعبة • بدون نرد • بدون قمار</span><h1>لَمّة تجمعكم<br><em>على نفس الجهاز.</em></h1><p>ألعاب سريعة للأصدقاء والعائلة. اختاروا لعبة، مرّروا الهاتف بينكم، وابدأوا التحدي.</p><div class="hero-buttons"><button class="primary" onclick="quickGame()">🎲 اختر لعبة عشوائية</button><button class="secondary" onclick="document.querySelector('#games').scrollIntoView({behavior:'smooth'})">استكشف الألعاب</button></div><div class="stats"><span><b>12</b> لعبة</span><span><b>0$</b> تكلفة تشغيل</span><span><b>0</b> نرد</span></div></div><div class="hero-logo"><div class="logo-ring"><img src="logo.svg"></div><b>لَمّة</b><span>المرح يبدأ هنا</span></div></section>
+<section class="games-section" id="games"><div class="section-title"><div><span>اختاروا تحديكم</span><h2>كل الألعاب</h2></div><input id="search" placeholder="🔎 ابحث عن لعبة..." oninput="renderGames()"></div><div class="filters"><button class="active" onclick="filterGames('all',this)">الكل</button><button onclick="filterGames('speed',this)">⚡ سرعة</button><button onclick="filterGames('brain',this)">🧠 ذكاء</button><button onclick="filterGames('party',this)">🎉 جماعية</button></div><div id="gamesGrid" class="games"></div></section>
+<section class="how"><h2>كيف تلعبون؟</h2><div class="how-grid"><div><b>01</b><h3>اختاروا لعبة</h3><p>اختاروا أي تحدي من القائمة.</p></div><div><b>02</b><h3>مرّروا الجهاز</h3><p>كل الألعاب مصممة لجهاز واحد.</p></div><div><b>03</b><h3>نافسوا</h3><p>اجمعوا النقاط واعرفوا الفائز.</p></div></div></section>
+<section class="rules"><h2>قواعد لَمّة</h2><div>✓ لا قمار أو مراهنات</div><div>✓ لا نرد أو ألعاب تعتمد على الحظ</div><div>✓ لا مشتريات داخلية</div><div>✓ لا تسجيل ولا حسابات</div><div>✓ تعمل بدون خادم</div></section></main>
+<div id="modal" class="modal hidden"><div class="modal-box"><button class="close" onclick="closeModal()">×</button><div id="modalBody"></div></div></div><footer>لَمّة © 2026 — ألعاب مجانية للمتعة والمنافسة</footer><script src="app.js"></script></body></html>

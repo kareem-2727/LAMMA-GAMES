@@ -1,30 +1,37 @@
 const games=[
-{id:"speed",emoji:"⚡",name:"أسرع واحد",desc:"اضغط واختر الإجابة الصحيحة قبل الآخرين.",type:"speed"},
-{id:"memory",emoji:"🧠",name:"ذاكرة",desc:"احفظ الترتيب ثم اكتشف البطاقة المطلوبة.",type:"memory"},
-{id:"guess",emoji:"🕵️",name:"المخفي",desc:"لاعب واحد لا يعرف الكلمة. اكتشفوه من الأسئلة.",type:"guess"},
-{id:"draw",emoji:"🎨",name:"ارسم وخمّن",desc:"ارسم الكلمة ودع أصحابك يحاولون معرفتها.",type:"draw"},
-{id:"math",emoji:"➕",name:"تحدي الحساب",desc:"حل المسألة بسرعة. الأسرع يحصل على النقطة.",type:"match"},{id:"xo",emoji:"❌⭕",name:"إكس أو",desc:"لعبة مهارة لشخصين بدون أي حظ.",type:"xo"}
-];
-const questions=["ما عاصمة فلسطين؟","كم عدد أيام الأسبوع؟","ما الكوكب المعروف بالكوكب الأحمر؟","كم يساوي 7 × 8؟"];
-const answers=[["القدس","القاهرة","دمشق","عمّان"],["5","7","9","10"],["المريخ","الزهرة","المشتري","عطارد"],["54","56","64","48"]];
-const $=s=>document.querySelector(s), modal=$("#modal"), content=$("#modalContent");
-$("#games").innerHTML=games.map(g=>`<article class="game"><div class="emoji">${g.emoji}</div><h3>${g.name}</h3><p>${g.desc}</p><button onclick="openGame('${g.type}')">العب الآن</button></article>`).join("");
-function show(html){content.innerHTML=html;modal.classList.remove("hidden")}
-$("#close").onclick=()=>modal.classList.add("hidden");
-$("#roomBtn").onclick=()=>show(`<h2>أنشئ غرفة</h2><p>هذه نسخة تجريبية بدون خادم. استخدموا نفس الجهاز الآن، وسنضيف الغرف عبر الإنترنت في المرحلة التالية.</p><div class="room-code">${Math.random().toString(36).slice(2,6).toUpperCase()}</div><button class="full" onclick="modal.classList.add('hidden')">جاهز</button>`);
-$("#quickBtn").onclick=()=>openGame("speed");
-function openGame(type){
- if(type==="speed"){let i=Math.floor(Math.random()*questions.length);show(`<div class="score">⚡ الجولة السريعة</div><div class="question">${questions[i]}</div><div class="choice-grid">${answers[i].map(a=>`<button class="choice" onclick="answer('${a}','${answers[i][0]}')">${a}</button>`).join("")}</div>`)}
- if(type==="math"){let a=Math.floor(Math.random()*12)+2,b=Math.floor(Math.random()*12)+2,correct=a*b;show(`<h2>➕ تحدي الحساب</h2><div class="question">${a} × ${b} = ؟</div><input id="ans" class="input" type="number" inputmode="numeric" placeholder="اكتب الإجابة"><button class="full" onclick="checkMath(${correct})">تحقق</button>`)}
- if(type==="memory"){const nums=[1,2,3,4,5,6].sort(()=>Math.random()-.5);show(`<h2>🧠 ذاكرة</h2><p>احفظ الأرقام بالترتيب:</p><div class="question">${nums.join(" • ")}</div><button class="full" onclick="memoryAsk(${JSON.stringify(nums)})">اختفت!</button>`)}
- if(type==="guess"){show(`<h2>🕵️ المخفي</h2><p>اختاروا كلمة سر يعرفها الجميع ما عدا لاعب واحد، ثم اسألوا بعضكم أسئلة غير مباشرة.</p><button class="full" onclick="newHiddenWord()">ابدأ جولة</button>`)}
- if(type==="draw"){show(`<h2>🎨 ارسم وخمّن</h2><p>واجهة أولية للفكرة. سنضيف لوحة رسم حقيقية في الخطوة التالية.</p><div class="question">ارسم: 🚀 صاروخ</div><button class="full" onclick="modal.classList.add('hidden')">تم</button>`)}
- if(type==="xo"){show(`<h2>❌⭕ إكس أو</h2><div id="board" class="choice-grid"></div>`);startXO()}
-}
-function answer(ch,correct){show(`<h2>${ch===correct?"🎉 صحيح!":"❌ ليست الإجابة الصحيحة"}</h2><p>${ch===correct?"أخذت نقطة.":"جرب الجولة التالية."}</p><button class="full" onclick="openGame('speed')">جولة جديدة</button>`)}
-function checkMath(n){let v=Number($("#ans").value);show(`<h2>${v===n?"🎉 إجابة صحيحة!":"❌ حاول مرة أخرى"}</h2><p>الإجابة الصحيحة: ${n}</p><button class="full" onclick="openGame('math')">مسألة جديدة</button>`)}
-function memoryAsk(nums){let shuffled=[...nums].sort(()=>Math.random()-.5);show(`<h2>🧠 تذكّر</h2><p>ما الرقم الذي كان في المركز الثالث؟</p><div class="choice-grid">${shuffled.map(n=>`<button class="choice" onclick="answerMemory(${n},${nums[2]})">${n}</button>`).join("")}</div>`)}
-function answerMemory(a,c){show(`<h2>${a===c?"🎉 ممتاز!":"❌ خطأ"}</h2><p>كان الرقم الثالث: ${c}</p><button class="full" onclick="openGame('memory')">جولة جديدة</button>`)}
-function newHiddenWord(){const words=["موزة","سيارة","مدرسة","كرة قدم","بيتزا"];const w=words[Math.floor(Math.random()*words.length)];show(`<h2>🕵️ كلمة الجولة</h2><p>مرر الهاتف لكل لاعب ليعرف دوره. توزيع الأدوار للكامل سيضاف مع نظام الغرف.</p><div class="question">الكلمة: ${w}</div>`)}
-function startXO(){let board=Array(9).fill("");let turn="X";const render=()=>{$("#board").innerHTML=board.map((v,i)=>`<button class="choice" style="font-size:30px;height:70px" onclick="xoMove(${i})">${v||"·"}</button>`).join("")};window.xoMove=i=>{if(board[i])return;board[i]=turn;turn=turn==="X"?"O":"X";render()};render()}
-$("#langBtn").onclick=()=>alert("English mode is planned for the next version.");
+{id:"speed",emoji:"⚡",name:"أسرع واحد",cat:"speed",desc:"جاوب قبل الجميع.",fn:"speed"},
+{id:"math",emoji:"➗",name:"حساب سريع",cat:"brain",desc:"حل المسألة بأسرع وقت.",fn:"math"},
+{id:"memory",emoji:"🧠",name:"اختبر ذاكرتك",cat:"brain",desc:"احفظ الترتيب ثم تذكّر.",fn:"memory"},
+{id:"guess",emoji:"🕵️",name:"المخفي",cat:"party",desc:"اكتشف اللاعب المخفي.",fn:"guess"},
+{id:"draw",emoji:"🎨",name:"ارسم وخمّن",cat:"party",desc:"ارسم والباقي يخمّن.",fn:"draw"},
+{id:"xo",emoji:"❌",name:"إكس أو",cat:"brain",desc:"مهارة وتركيز لشخصين.",fn:"xo"},
+{id:"odd",emoji:"👀",name:"مختلف",cat:"speed",desc:"اعثر على الرمز المختلف.",fn:"odd"},
+{id:"sequence",emoji:"🔢",name:"ما التالي؟",cat:"brain",desc:"اكتشف الرقم التالي.",fn:"sequence"},
+{id:"word",emoji:"🔤",name:"كلمة ناقصة",cat:"brain",desc:"أكمل الكلمة بأسرع وقت.",fn:"word"},
+{id:"reaction",emoji:"🟢",name:"ردّة الفعل",cat:"speed",desc:"اضغط فور ظهور الأخضر.",fn:"reaction"},
+{id:"categories",emoji:"🗂️",name:"تصنيف",cat:"party",desc:"اذكر كلمات من الفئة.",fn:"categories"},
+{id:"higher",emoji:"🏆",name:"أعلى أو أقل",cat:"party",desc:"توقّع الرقم التالي بدون نرد.",fn:"higher"}];
+let active="all", soundOn=true, reactionTimer;
+function renderGames(){let q=(document.querySelector("#search")?.value||"").toLowerCase();document.querySelector("#gamesGrid").innerHTML=games.filter(g=>(active==="all"||g.cat===active)&&(g.name.includes(q)||g.desc.includes(q))).map(g=>`<article class="game-card"><div class="game-icon">${g.emoji}</div><div class="game-info"><h3>${g.name}</h3><p>${g.desc}</p><button onclick="openGame('${g.fn}')">العب الآن <span>←</span></button></div></article>`).join("")}
+function filterGames(c,b){active=c;document.querySelectorAll(".filters button").forEach(x=>x.classList.remove("active"));b.classList.add("active");renderGames()}
+function show(html){document.querySelector("#modalBody").innerHTML=html;document.querySelector("#modal").classList.remove("hidden")}
+function closeModal(){document.querySelector("#modal").classList.add("hidden");clearTimeout(reactionTimer)}
+function quickGame(){openGame(games[Math.floor(Math.random()*games.length)].fn)}
+function openGame(t){
+if(t==="speed")speed();if(t==="math")math();if(t==="memory")memory();if(t==="guess")guess();if(t==="draw")draw();if(t==="xo")xo();if(t==="odd")odd();if(t==="sequence")sequence();if(t==="word")word();if(t==="reaction")reaction();if(t==="categories")categories();if(t==="higher")higher()}
+function speed(){const data=[["ما عاصمة فلسطين؟",["القدس","عمّان","دمشق","بيروت"],0],["كم عدد أيام الأسبوع؟",["5","6","7","8"],2],["ما الكوكب الأحمر؟",["الزهرة","المريخ","الأرض","زحل"],1],["كم 9×6؟",["45","54","56","63"],1]];let d=data[Math.floor(Math.random()*data.length)];show(`<div class="game-head">⚡ أسرع واحد</div><h2>${d[0]}</h2><div class="answers">${d[1].map((x,i)=>`<button onclick="result(${i===d[2]})">${x}</button>`).join("")}</div>`)}
+function result(ok){show(`<div class="result ${ok?"win":"lose"}">${ok?"🎉":"😅"}</div><h2>${ok?"إجابة صحيحة!":"ليست الإجابة الصحيحة"}</h2><p>${ok?"أحسنت!":"لا بأس، جولة ثانية."}</p><button class="full" onclick="quickGame()">جولة جديدة</button>`)}
+function math(){let a=2+Math.floor(Math.random()*18),b=2+Math.floor(Math.random()*12),op=Math.random()<.5?"×":"+ ",ans=op==="×"?a*b:a+b;show(`<div class="game-head">➗ حساب سريع</div><h2>${a} ${op} ${b} = ؟</h2><input id="answer" class="input" type="number" inputmode="numeric" autofocus><button class="full" onclick="result(Number(answer.value)===${ans})">تحقق</button>`)}
+function memory(){let nums=[1,2,3,4,5,6,7,8].sort(()=>Math.random()-.5),target=nums[4];show(`<div class="game-head">🧠 اختبر ذاكرتك</div><p>احفظ الأرقام خلال 3 ثوانٍ:</p><div class="memory">${nums.join(" • ")}</div><p class="muted">بعدها اختفِ الأرقام واضغط التالي.</p><button class="full" onclick="memoryQ(${target})">جاهز</button>`);setTimeout(()=>{const m=document.querySelector(".memory");if(m)m.textContent="؟ • ؟ • ؟ • ؟ • ؟ • ؟ • ؟ • ؟"},3000)}
+function memoryQ(target){let opts=[target,target+1,target-1,8].sort(()=>Math.random()-.5);show(`<div class="game-head">🧠 ما كان الرقم الخامس؟</div><div class="answers">${opts.map(x=>`<button onclick="result(${x===target})">${x}</button>`).join("")}</div>`)}
+function guess(){let words=["صاروخ","مكتبة","بيتزا","ملعب","مدرسة","حديقة"];let w=words[Math.floor(Math.random()*words.length)];show(`<div class="game-head">🕵️ المخفي</div><h2>للاعب الذي يعرف الكلمة فقط:</h2><div class="secret">${w}</div><p>مرّروا الجهاز ثم اسألوا بعضكم أسئلة غير مباشرة. اللاعب الذي لا يعرف الكلمة يحاول الاندماج.</p><button class="full" onclick="closeModal()">بدأنا</button>`)}
+function draw(){let words=["قمر","سيارة","شجرة","روبوت","أسد","طائرة","هاتف","بيت"];let w=words[Math.floor(Math.random()*words.length)];show(`<div class="game-head">🎨 ارسم وخمّن</div><p>الرسام فقط ينظر:</p><div class="secret">${w}</div><div class="canvas"><span>✏️ ارسمها على ورقة</span></div><p>أول شخص يخمّن يحصل على نقطة.</p>`)}
+function xo(){show(`<div class="game-head">❌⭕ إكس أو</div><div id="board" class="board"></div><p id="xoStatus">دور X</p>`);let b=Array(9).fill(""),turn="X";window.move=i=>{if(b[i]||winner(b))return;b[i]=turn;turn=turn==="X"?"O":"X";document.querySelector("#board").innerHTML=b.map((x,i)=>`<button onclick="move(${i})">${x}</button>`).join("");let w=winner(b);if(w)document.querySelector("#xoStatus").textContent="الفائز: "+w;else if(b.every(Boolean))document.querySelector("#xoStatus").textContent="تعادل!";else document.querySelector("#xoStatus").textContent="دور "+turn};window.move(9);function winner(a){for(let [x,y,z] of [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]])if(a[x]&&a[x]===a[y]&&a[x]===a[z])return a[x]}}
+function odd(){let n=8,odd=Math.floor(Math.random()*n);show(`<div class="game-head">👀 مختلف</div><p>اضغط الرمز المختلف بأسرع ما يمكن:</p><div class="odd-grid">${Array.from({length:n},(_,i)=>`<button onclick="result(${i===odd})">●</button>`).join("")}</div>`)}
+function sequence(){let start=2+Math.floor(Math.random()*8),step=2+Math.floor(Math.random()*5),arr=[0,1,2,3,4].map(i=>start+i*step);show(`<div class="game-head">🔢 ما التالي؟</div><div class="sequence">${arr.join(" • ")} • ?</div><div class="answers">${[arr[4]+step,arr[4]+step+1,arr[4]-step,arr[4]+2].sort(()=>Math.random()-.5).map(x=>`<button onclick="result(${x===arr[4]+step})">${x}</button>`).join("")}</div>`)}
+function word(){let pairs=[["مـدر_ة","س"],["سـيـا_ة","ر"],["مك_بة","ت"],["طـا_رة","ئ"]],p=pairs[Math.floor(Math.random()*pairs.length)];show(`<div class="game-head">🔤 كلمة ناقصة</div><div class="sequence">${p[0]}</div><div class="answers">${["ا","ب","ر","ت","س","ئ"].map(x=>`<button onclick="result('${x}'==='${p[1]}')">${x}</button>`).join("")}</div>`)}
+function reaction(){show(`<div class="game-head">🟢 ردّة الفعل</div><button id="react" class="reaction" onclick="reactClick()">انتظر الأخضر...</button>`);let delay=1200+Math.random()*2800;reactionTimer=setTimeout(()=>{let b=document.querySelector("#react");if(b){b.classList.add("go");b.textContent="اضغط الآن!"}},delay)}
+function reactClick(){let b=document.querySelector("#react");if(!b.classList.contains("go")){b.textContent="ضغطت بدري 😅";clearTimeout(reactionTimer)}else{b.textContent="🔥 ممتاز! ردّة فعل سريعة";b.classList.remove("go")}}
+function categories(){let cats=["أشياء في المدرسة","حيوانات","أكلات","مدن","أشياء لونها أحمر"];let c=cats[Math.floor(Math.random()*cats.length)];show(`<div class="game-head">🗂️ تصنيف</div><h2>${c}</h2><p>كل لاعب لديه 20 ثانية ليقول كلمة جديدة. لا تكرروا الإجابات!</p><div class="timer-big">20</div><button class="full" onclick="closeModal()">ابدأ</button>`)}
+function higher(){let n=20+Math.floor(Math.random()*60),next=n+(Math.random()<.5?-1:1)*(2+Math.floor(Math.random()*20));show(`<div class="game-head">🏆 أعلى أو أقل</div><div class="sequence">${n}</div><p>هل الرقم التالي أعلى أم أقل؟</p><div class="answers"><button onclick="result(${next>n})">⬆️ أعلى</button><button onclick="result(${next<n})">⬇️ أقل</button></div>`)}
+document.querySelector("#sound").onclick=e=>{soundOn=!soundOn;e.target.textContent=soundOn?"🔊":"🔇"};renderGames();
